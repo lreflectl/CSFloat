@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <chrono>
 
 using namespace std;
 
@@ -147,12 +148,17 @@ int main()
         0.35664117336273193,
         0.34278947114944460,
     };
+
+    // noting the time
+    auto start_time = chrono::high_resolution_clock::now();
+
     vector<double> resultCombs;
     resultCombs.reserve(100);
 
     int r = 10;
     int n = inputFloats.size();
-    int n_threads = _Thrd_hardware_concurrency();
+    // int n_threads = thread::hardware_concurrency();
+    int n_threads = 4;
 
     long long combs_len = combinations_len(n, r);
     cout << "Input combs = " << n << endl;
@@ -190,6 +196,13 @@ int main()
     }
     
 
+    // printing the duration
+    auto end_time = chrono::high_resolution_clock::now();
+    unsigned long time_ms = chrono::duration_cast<chrono::milliseconds>(end_time - start_time).count();
+    cout << endl << "Time spent = " << (float) time_ms / 1000 << "second(s)" << endl;
+
+
+    // printing results
     cout << endl << "RESULT ARRAY:" << endl;
     print_array(resultCombs, resultCombs.size());
 
